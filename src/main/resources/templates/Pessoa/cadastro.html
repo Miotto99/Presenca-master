@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Cadastro</title>
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center">Cadastro</h1>
+    <form action="/cadastro" method="post" class="mt-3">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="sp_nome"><i class="fa-solid fa-user"></i></span>
+                    <input id="Nome" name="Nome" type="text" class="form-control" placeholder="Nome"
+                           aria-label="Nome" aria-describedby="sp_nome">
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="sp_email"><i class="fa-regular fa-at"></i></span>
+                    <input id="Email" name="Email" type="text" class="form-control" placeholder="E-mail"
+                           aria-label="E-mail" aria-describedby="sp_email">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="sp_cpf"><i class="fa-solid fa-id-card"></i></span>
+                    <input id="CPF" name="CPF" type="text" class="form-control" placeholder="CPF"
+                           aria-label="CPF" aria-describedby="sp_cpf">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="sp_telefone"><i class="fa-solid fa-phone"></i></span>
+                    <input id="Telefone" name="Telefone" type="text" class="form-control" placeholder="Telefone"
+                           aria-label="Telefone" aria-describedby="sp_telefone">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="sp_data"><i class="fa-regular fa-calendar-days"></i></span>
+                    <input id="Datanasc" name="Datanasc" type="date" class="form-control" placeholder="Data nascimento"
+                           aria-label="Data nascimento" aria-describedby="sp_datanasc">
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="sp_senha"><i class="fa-solid fa-key"></i></span>
+                    <input id="Senha" name="Senha" type="password" class="form-control" placeholder="Senha"
+                           aria-label="Senha" aria-describedby="sp_senha">
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="sp_confirmasenha"><i class="fa-solid fa-lock"></i></span>
+                    <input id="Confirmsenha" name="Confirmsenha" type="password" class="form-control"
+                           placeholder="Confirma senha"
+                           aria-label="Confirma senha" aria-describedby="sp_confirmasenha">
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <a class="btn btn-danger" href="/">Cancelar</a>
+            </div>
+            <div class="col-sm-6 text-right">
+                <input value="Cadastrar" type="submit" class="btn btn-success">
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
