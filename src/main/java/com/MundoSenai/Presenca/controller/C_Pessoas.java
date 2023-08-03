@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
+
 @Controller
 public class C_Pessoas {
     @GetMapping("/")
@@ -26,13 +28,14 @@ public class C_Pessoas {
     public String GetCadastro() { return "Pessoa/cadastro";}
 
     @PostMapping("/cadastro")
-    public String postcadastro(@RequestParam("Nome") String Nome,
-                               @RequestParam("Email") String Email,
-                               @RequestParam("CPF") String CPF,
-                               @RequestParam("Telefone")String Telefone,
-                               @RequestParam("Datanasc")String Datanasc,
-                               @RequestParam("Senha")String Senha,
-                               @RequestParam("Confirmsenha")String Confirmsenha){
+    public String postcadastro(@RequestParam("Nome") String nome,
+                               @RequestParam("Email") String email,
+                               @RequestParam("CPF") String cpf,
+                               @RequestParam("Telefone")String telefone,
+                               @RequestParam("Datanasc") String datanasc,
+                               @RequestParam("Senha")String senha,
+                               @RequestParam("Confirmsenha")String confirmsenha){
+        S_Pessoa.cadastrarPessoa(nome, email, cpf, telefone, datanasc, senha, confirmsenha);
         return "redirect:/";
     }
 }
