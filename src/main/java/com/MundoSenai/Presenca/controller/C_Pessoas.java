@@ -39,6 +39,11 @@ public class C_Pessoas {
                                Model model){
         String mensagem = S_Pessoa.cadastrarPessoa(nome, email, cpf, telefone, datanasc, senha, confirmsenha);
         model.addAttribute("mensagem", mensagem);
+        model.addAttribute("nome", nome);
+        model.addAttribute("email", email);
+        model.addAttribute("cpf", cpf);
+        model.addAttribute("telefone", telefone);
+        model.addAttribute("datanasc", datanasc);
         return "Pessoa/cadastro";
     }
 }

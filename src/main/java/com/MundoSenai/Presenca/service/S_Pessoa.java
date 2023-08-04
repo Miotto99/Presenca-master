@@ -15,17 +15,13 @@ public class S_Pessoa {
     }
 
     public static M_Pessoa getPessoaLogin(String usuario, String senha){
-        if((senha == null || senha.trim() == null) && (usuario == null || usuario.trim() == null)){
-            return "Necessário inserir usuario e senha";
-        }else{
-            return "Login realizado com sucesso";
-        }
+
         return r_pessoa.findByUsuarioESenha(Long.valueOf(usuario), senha);
     }
 
     public static String cadastrarPessoa(String Nome,String Email, String CPF,  String Telefone, String Datanasc, String Senha, String Confirmsenha){
         if(Senha.equals(Confirmsenha)){
-            return "A senha e a corfirmação de senha devem ser iguais";
+            return "A senha e a confirmação de senha devem ser iguais";
         }else if(S_CPF.validarCPF(CPF)){
             return "CPF inválido";
         }else if(Nome == null || Nome.trim() == ""){
@@ -36,8 +32,8 @@ public class S_Pessoa {
             M_Pessoa m_pessoa = new M_Pessoa();
             m_pessoa.setNome(Nome);
             m_pessoa.setEmail(Email);
-            m_pessoa.setCpf(Long.valueOf(CPF));
-            m_pessoa.setTelefone(Long.valueOf(Telefone));
+            m_pessoa.setCpf(Long.valueOf(NumberCleaner.cleanerNumber(CPF)));
+            m_pessoa.setTelefone(Long.valueOf(NumberCleaner.cleanerNumber(Telefone)));
             m_pessoa.setData_nasc(LocalDate.parse(Datanasc));
             m_pessoa.setSenha(Senha);
             r_pessoa.save(m_pessoa);
