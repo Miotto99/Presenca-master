@@ -22,13 +22,13 @@ public class S_Pessoa {
     public static String cadastrarPessoa(String Nome,String Email, String CPF,  String Telefone, String Datanasc, String Senha, String Confirmsenha){
         if(Senha.equals(Confirmsenha)){
             return "A senha e a confirmação de senha devem ser iguais";
-        }else if(S_CPF.validarCPF(CPF)){
+        }if(S_CPF.validarCPF(CPF)){
             return "CPF inválido";
-        }else if(Nome == null || Nome.trim() == ""){
+        }if(Nome == null || Nome.trim() == ""){
             return "Deve ser informado um nome";
-        }else if((Email == null || Email.trim() == "") && (NumberCleaner.cleanerNumber(Telefone) == null || NumberCleaner.cleanerNumber(Telefone).trim() == "")){
+        }if((Email == null || Email.trim() == "") && (NumberCleaner.cleanerNumber(Telefone) == null || NumberCleaner.cleanerNumber(Telefone).trim() == "")){
             return "O e-Mail ou o telefone precisam ser informados";
-        }else{
+        }e{
             M_Pessoa m_pessoa = new M_Pessoa();
             m_pessoa.setNome(Nome);
             m_pessoa.setEmail(Email);
@@ -37,7 +37,8 @@ public class S_Pessoa {
             m_pessoa.setData_nasc(LocalDate.parse(Datanasc));
             m_pessoa.setSenha(Senha);
             r_pessoa.save(m_pessoa);
+            mensagemRetorno = "Cadastro efetuado com sucesso"
         }
-        return "Cadastro efetuado com sucesso";
+        return mensagemRetorno;
     }
 }

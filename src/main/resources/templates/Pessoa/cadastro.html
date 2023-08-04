@@ -22,7 +22,7 @@
 <body>
 <div class="container mt-5">
     <div th:if="${mensagem}" style="color: red">
-        <p th:text="${mensagem}"></p>
+        <p th:utext="${mensagem}"></p>
     </div>
     <h1 class="text-center">Cadastro</h1>
     <form action="/cadastro" method="post" class="mt-3">
