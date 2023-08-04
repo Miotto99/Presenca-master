@@ -15,6 +15,11 @@ public class S_Pessoa {
     }
 
     public static M_Pessoa getPessoaLogin(String usuario, String senha){
+        if((senha == null || senha.trim() == null) && (usuario == null || usuario.trim() == null)){
+            return "Necessário inserir usuario e senha";
+        }else{
+            return "Login realizado com sucesso";
+        }
         return r_pessoa.findByUsuarioESenha(Long.valueOf(usuario), senha);
     }
 
