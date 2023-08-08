@@ -61,7 +61,7 @@ public class M_Pessoa {
         return data_nasc;
     }
 
-    public void setData_nasc(LocalDate data_nasc) {
+    public void setDatanasc(LocalDate data_nasc) {
         this.data_nasc = data_nasc;
     }
 

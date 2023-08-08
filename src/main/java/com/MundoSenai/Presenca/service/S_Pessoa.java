@@ -2,6 +2,7 @@ package com.MundoSenai.Presenca.service;
 
 import com.MundoSenai.Presenca.model.M_Pessoa;
 import com.MundoSenai.Presenca.repository.R_Pessoa;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -10,35 +11,69 @@ import java.time.LocalDate;
 public class S_Pessoa {
     private static R_Pessoa r_pessoa;
 
-    public S_Pessoa(R_Pessoa r_pessoa){
+    public S_Pessoa(R_Pessoa r_pessoa) {
         this.r_pessoa = r_pessoa;
     }
 
-    public static M_Pessoa getPessoaLogin(String usuario, String senha){
-
-        return r_pessoa.findByUsuarioESenha(Long.valueOf(usuario), senha);
+    public static M_Pessoa getPessoaLogin(String usuario, String senha) {
+        usuario = NumberCleaner.cleanerNumber(usuario);
+        if(usuario.equals("")){
+            return r_pessoa.findByUsuarioESenha(null,senha);
+        }else{
+            return r_pessoa.findByUsuarioESenha(Long.valueOf(usuario), senha);
+        }
     }
 
-    public static String cadastrarPessoa(String Nome,String Email, String CPF,  String Telefone, String Datanasc, String Senha, String Confirmsenha){
-        if(Senha.equals(Confirmsenha)){
-            return "A senha e a confirmação de senha devem ser iguais";
-        }if(S_CPF.validarCPF(CPF)){
-            return "CPF inválido";
-        }if(Nome == null || Nome.trim() == ""){
-            return "Deve ser informado um nome";
-        }if((Email == null || Email.trim() == "") && (NumberCleaner.cleanerNumber(Telefone) == null || NumberCleaner.cleanerNumber(Telefone).trim() == "")){
-            return "O e-Mail ou o telefone precisam ser informados";
-        }e{
+    public static String cadastrarPessoa(String nome, String cpf, String email, String telefone, String dataNasc, String senha, String confsenha) {
+        boolean cadastrovalido = true;
+        String mensagemRetorno = "";
+        telefone = NumberCleaner.cleanerNumber(telefone);
+        if (telefone.equals("")){
+            telefone = null;
+        }
+        if (!senha.equals(confsenha)) {
+            mensagemRetorno += "A senha e a confirmação de senha devem ser iguais.<br/>";
+            cadastrovalido = false;
+        } if (!S_CPF.validarCPF(cpf)) {
+            mensagemRetorno += "CPF inválido.<br/>";
+            cadastrovalido = false;
+        } if (nome == null || nome.trim() == "") {
+            mensagemRetorno += "Deve ser informado um nome.<br/>";
+            cadastrovalido = false;
+        } if ((email == null || email.trim() == "") && telefone == null) {
+            mensagemRetorno += "E-mail e/ou telefone precisa ser informado.<br/>";
+            cadastrovalido = false;
+        } if(cadastrovalido) {
             M_Pessoa m_pessoa = new M_Pessoa();
-            m_pessoa.setNome(Nome);
-            m_pessoa.setEmail(Email);
-            m_pessoa.setCpf(Long.valueOf(NumberCleaner.cleanerNumber(CPF)));
-            m_pessoa.setTelefone(Long.valueOf(NumberCleaner.cleanerNumber(Telefone)));
-            m_pessoa.setData_nasc(LocalDate.parse(Datanasc));
-            m_pessoa.setSenha(Senha);
-            r_pessoa.save(m_pessoa);
-            mensagemRetorno = "Cadastro efetuado com sucesso"
+            m_pessoa.setNome(nome);
+            m_pessoa.setCpf(Long.valueOf(cpf));
+            m_pessoa.setTelefone(Long.valueOf(telefone));
+            if(telefone != null){
+                m_pessoa.setTelefone(Long.valueOf(telefone));
+            }else{
+                m_pessoa.setTelefone(null);
+            }
+            m_pessoa.setEmail(email);
+            m_pessoa.setDatanasc(LocalDate.parse(dataNasc));
+            m_pessoa.setSenha(senha);
+            try {
+                r_pessoa.save(m_pessoa);
+                mensagemRetorno += "Cadastro realizado com sucesso!";
+            }
+            catch (DataIntegrityViolationException e){
+                if(e.getMessage().contains("u_key")){
+                    mensagemRetorno +="O CPF fornecido ja existe.";
+
+                }
+                else{
+                    mensagemRetorno+="Erro ao cadastrar.";
+                }
+            }
+
+
+
         }
         return mensagemRetorno;
     }
+
 }
