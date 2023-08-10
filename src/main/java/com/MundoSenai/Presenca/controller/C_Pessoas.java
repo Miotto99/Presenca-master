@@ -1,16 +1,16 @@
 package com.MundoSenai.Presenca.controller;
 
 import com.MundoSenai.Presenca.model.M_Pessoa;
+import com.MundoSenai.Presenca.model.M_Resposta;
 import com.MundoSenai.Presenca.service.S_Pessoa;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.time.LocalDate;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class C_Pessoas {
@@ -23,47 +23,58 @@ public class C_Pessoas {
     public String postLogin(@RequestParam("usuario") String usuario,
                             @RequestParam("senha") String senha,
                             HttpSession session) {
-        session.setAttribute("usuario",S_Pessoa.getPessoaLogin(usuario, senha));
-        if(session.getAttribute("usuario") == null){
+        session.setAttribute("usuario", S_Pessoa.getPessoaLogin(usuario, senha));
+        if (session.getAttribute("usuario") == null) {
             return "Login/login";
-        }else{
-            return "redirect/home";
+        } else {
+            return "redirect:/Home";
         }
     }
 
     @ModelAttribute("usuario")
-    public M_Pessoa getUsuario(HttpSession session){
+    public M_Pessoa getUsuario(HttpSession session) {
         return (M_Pessoa) session.getAttribute("usuario");
     }
 
     @GetMapping("/Home")
-    public String getHome(@ModelAttribute("usuario")String usuario){
-        if(usuario != null){
+    public String getHome(@ModelAttribute("usuario") String usuario) {
+        if (usuario != null) {
             return "Home/home";
-        }else{
-            return "redirect:/"
+        } else {
+            return "redirect:/";
         }
     }
 
     @GetMapping("/cadastro")
-    public String GetCadastro() { return "Pessoa/cadastro";}
-
-    @PostMapping("/cadastro")
-    public String postcadastro(@RequestParam("Nome") String nome,
-                               @RequestParam("Email") String email,
-                               @RequestParam("CPF") String cpf,
-                               @RequestParam("Telefone")String telefone,
-                               @RequestParam("Datanasc") String datanasc,
-                               @RequestParam("Senha")String senha,
-                               @RequestParam("Confirmsenha")String confirmsenha,
-                               Model model){
-        String mensagem = S_Pessoa.cadastrarPessoa(nome, email, cpf, telefone, datanasc, senha, confirmsenha);
-        model.addAttribute("mensagem", mensagem);
-        model.addAttribute("nome", nome);
-        model.addAttribute("email", email);
-        model.addAttribute("cpf", cpf);
-        model.addAttribute("telefone", telefone);
-        model.addAttribute("datanasc", datanasc);
+    public String GetCadastro() {
         return "Pessoa/cadastro";
     }
+
+    @PostMapping("/cadastro")
+    public RedirectView postcadastro(@RequestParam("Nome") String nome,
+                                     @RequestParam("CPF") String cpf,
+                                     @RequestParam("Email") String email,
+                                     @RequestParam("Telefone") String telefone,
+                                     @RequestParam("Datanasc") String datanasc,
+                                     @RequestParam("Senha") String senha,
+                                     @RequestParam("Confirmsenha") String confirmsenha,
+                                     RedirectAttributes redirectAttributes){
+
+    M_Resposta resposta = S_Pessoa.cadastrarPessoa(nome, cpf, email, telefone, datanasc, senha, confirmsenha);
+        redirectAttributes.addFlashAttribute("mensagem",resposta.getMensagem());
+        if(resposta.isSucesso())
+
+    {
+        return new RedirectView("/",true);
+    }else
+
+    {
+        redirectAttributes.addFlashAttribute("nome", nome);
+        redirectAttributes.addFlashAttribute("email", email);
+        redirectAttributes.addFlashAttribute("cpf", cpf);
+        redirectAttributes.addFlashAttribute("telefone", telefone);
+        redirectAttributes.addFlashAttribute("datanasc", datanasc);
+        return new RedirectView("/cadastro",true);
+    }
+}
 }

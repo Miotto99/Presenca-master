@@ -1,6 +1,7 @@
 package com.MundoSenai.Presenca.service;
 
 import com.MundoSenai.Presenca.model.M_Pessoa;
+import com.MundoSenai.Presenca.model.M_Resposta;
 import com.MundoSenai.Presenca.repository.R_Pessoa;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,8 @@ public class S_Pessoa {
         }
     }
 
-    public static String cadastrarPessoa(String nome, String cpf, String email, String telefone, String dataNasc, String senha, String confsenha) {
+    public static M_Resposta cadastrarPessoa(String nome, String cpf, String email, String telefone, String dataNasc, String senha, String confsenha) {
+
         boolean cadastrovalido = true;
         String mensagemRetorno = "";
         telefone = NumberCleaner.cleanerNumber(telefone);
@@ -34,7 +36,7 @@ public class S_Pessoa {
         if (!senha.equals(confsenha)) {
             mensagemRetorno += "A senha e a confirmação de senha devem ser iguais.<br/>";
             cadastrovalido = false;
-        } if (!S_CPF.validarCPF(cpf)) {
+        } if (!S_CPF.validateCPF(cpf)) {
             mensagemRetorno += "CPF inválido.<br/>";
             cadastrovalido = false;
         } if (nome == null || nome.trim() == "") {
@@ -46,8 +48,7 @@ public class S_Pessoa {
         } if(cadastrovalido) {
             M_Pessoa m_pessoa = new M_Pessoa();
             m_pessoa.setNome(nome);
-            m_pessoa.setCpf(Long.valueOf(cpf));
-            m_pessoa.setTelefone(Long.valueOf(telefone));
+            m_pessoa.setCpf(Long.valueOf(NumberCleaner.cleanerNumber(cpf)));
             if(telefone != null){
                 m_pessoa.setTelefone(Long.valueOf(telefone));
             }else{
@@ -68,12 +69,11 @@ public class S_Pessoa {
                 else{
                     mensagemRetorno+="Erro ao cadastrar.";
                 }
+                cadastrovalido = false;
             }
-
-
-
         }
-        return mensagemRetorno;
+        M_Resposta m_resposta = new M_Resposta(cadastrovalido,mensagemRetorno);
+        return m_resposta;
     }
 
 }

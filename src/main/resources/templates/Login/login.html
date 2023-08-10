@@ -21,10 +21,8 @@
 </head>
 <body>
 <div class="container mt-5">
-    <div th:if="${mensagem}" style="color: red">
-        <p th:text="${mensagem}"></p>
-    </div>
     <h1 class="text-center">Mundo Senai</h1>
+    <div th:if="${mensagem}" th:text="${mensagem}"></div>
     <form action="/" method="post" class="mt-3">
         <div class="input-group mb-3">
             <span class="input-group-text" id="sp_user"><i class="fa-solid fa-user"></i></span>
