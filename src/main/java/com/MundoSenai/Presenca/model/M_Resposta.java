@@ -9,7 +9,7 @@ public class M_Resposta {
         this.mensagem = mensagem;
     }
 
-    public boolean isSucesso() {
+    public boolean isSucesso()  {
         return sucesso;
     }
 
