@@ -22,11 +22,14 @@ public class C_Pessoas {
     @PostMapping("/")
     public String postLogin(@RequestParam("usuario") String usuario,
                             @RequestParam("senha") String senha,
-                            HttpSession session) {
-        session.setAttribute("usuario", S_Pessoa.getPessoaLogin(usuario, senha));
+                            HttpSession session,
+                            RedirectAttributes redirectAttributes) {
+        M_Pessoa pessoa = S_Pessoa.getPessoaLogin(usuario, senha);
+        session.setAttribute("usuario", pessoa);
         if (session.getAttribute("usuario") == null) {
             return "Login/login";
         } else {
+            redirectAttributes.addFlashAttribute("nome",pessoa.getNome());
             return "redirect:/Home";
         }
     }
