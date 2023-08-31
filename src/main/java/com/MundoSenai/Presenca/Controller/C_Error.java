@@ -1,4 +1,4 @@
-package com.MundoSenai.Presenca.controller;
+package com.MundoSenai.Presenca.Controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class C_Error_404 implements ErrorController {
+public class C_Error implements ErrorController {
     @RequestMapping("/error")
     public String postError(HttpServletRequest request, Model model){
         int statusCode = (int) request.getAttribute(""+"jakarta.servlet.error.status_code");

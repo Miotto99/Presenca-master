@@ -1,6 +1,6 @@
-package com.MundoSenai.Presenca.repository;
+package com.MundoSenai.Presenca.Repository;
 
-import com.MundoSenai.Presenca.model.M_Pessoa;
+import com.MundoSenai.Presenca.Model.M_Pessoa;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

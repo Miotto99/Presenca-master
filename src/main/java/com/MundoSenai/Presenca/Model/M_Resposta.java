@@ -1,4 +1,4 @@
-package com.MundoSenai.Presenca.model;
+package com.MundoSenai.Presenca.Model;
 
 public class M_Resposta {
     private boolean sucesso;

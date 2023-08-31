@@ -1,4 +1,4 @@
-package com.MundoSenai.Presenca.service;
+package com.MundoSenai.Presenca.Service;
 
 public class NumberCleaner {
     public static String cleanerNumber(String number){

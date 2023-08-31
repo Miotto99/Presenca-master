@@ -1,4 +1,4 @@
-package com.MundoSenai.Presenca.model;
+package com.MundoSenai.Presenca.Model;
 
 import jakarta.persistence.*;
 

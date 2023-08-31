@@ -1,8 +1,8 @@
-package com.MundoSenai.Presenca.service;
+package com.MundoSenai.Presenca.Service;
 
-import com.MundoSenai.Presenca.model.M_Pessoa;
-import com.MundoSenai.Presenca.model.M_Resposta;
-import com.MundoSenai.Presenca.repository.R_Pessoa;
+import com.MundoSenai.Presenca.Model.M_Pessoa;
+import com.MundoSenai.Presenca.Model.M_Resposta;
+import com.MundoSenai.Presenca.Repository.R_Pessoa;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -62,7 +62,7 @@ public class S_Pessoa {
                 mensagemRetorno += "Cadastro realizado com sucesso!";
             }
             catch (DataIntegrityViolationException e){
-                if(e.getMessage().contains("u_key")){
+                if(e.getMessage().contains("pessoa_cpf_key")){
                     mensagemRetorno +="O CPF fornecido ja existe.";
 
                 }
