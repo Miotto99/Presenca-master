@@ -10,6 +10,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
             crossorigin="anonymous"></script>
+    <script src="validadorCPF.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
             integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
             crossorigin="anonymous"></script>
@@ -18,33 +19,135 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <title>Login</title>
+    <style>
+    /* Adjust the z-index of the toast to make it appear above input fields */
+    .toaster {
+        z-index: 1000; /* You can adjust this value as needed */
+    }
+    .error-field{
+        border: 1px solid red;
+        border-radius: 0.375rem;
+        box-shadow: 0px 0px 5px 0px red;
+    }
+    h1{
+        text-shadow: -1px 1px 1px #aaa;
+    }
+    input:focus{
+        box-shadow: 0px 4px 4px 3px #aaa !important;
+        z-index: -3;
+    }
+    </style>
 </head>
 <body>
+<script type="text/javascript">
+    function validaCampoVazio(campo){
+        if(campo.trim() == ''){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    function createToastArea(){
+       if($(".toaster").length == 0){
+            $("body").prepend(''+
+               '<div aria-live="polite" aria-atomic="true"'+
+               'class="position-absolute top-0 end-0 erros">'+
+               '<div class="toaster position-absolute top-0 end-0">'+
+               '</div>'+
+               '</div>');
+       }
+    }
+
+    function showToast(alerta) {
+        createToastArea();
+        let tipo
+        if(alerta.sucesso){
+            tipo = ' bg-success ';
+        }else{
+            tipo = ' bg-danger ';
+        }
+        const toastElement = $('<div class="mt-1 toast align-items-center'+tipo+'text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">'+
+                                    '<div class="d-flex">'+
+                                        '<div class="toast-body">'+
+                                            alerta.mensagem+
+                                        '</div>'+
+                                        '<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>'+
+                                    '</div>'+
+                               '</div>');
+
+            toastElement.on('hidden.bs.toast', function () {
+                $(this).remove();
+            });
+
+            $(".toaster").append(toastElement);
+            const newToast = new bootstrap.Toast(toastElement);
+            newToast.show();
+        }
+
+    function validaLogin(){
+        let podeEnviar = true;
+        let senha = $("#senha").val();
+        let cpf = $("#cpf").val();
+
+        $("#errorMensage").text('')
+        $(".error-field").removeClass("error-field");
+        if(validarCPF(cpf)){
+             podeEnviar = false;
+            showToast({sucesso: false, mensagem : "O usuario precisa ser preenchido"});
+            $(".gCpf").addClass("error-field");
+        }if(validaCampoVazio(senha)){
+              podeEnviar = false;
+            showToast({sucesso: false, mensagem : "A senha precisa ser informada"});
+            $(".gSenha").addClass("error-field");
+        }
+
+        if(podeEnviar){
+            $.ajax({
+                type: "POST",
+                url: "/home",
+                data:{
+                    cpf:cpf,
+                    senha:senha,
+                },
+                success: function(data){
+                    $("#errorMensage").text('')
+                    if(data.sucesso){
+                        window.location.href="/home";
+                    }else{
+                        $("#errorMensage").append(data.mensagem);
+                    }
+                },
+                error: function(){
+                    alert("Deu ruim");
+                }
+            });
+        }
+    }
+</script>
 <div class="container mt-5">
     <h1 class="text-center">Mundo Senai</h1>
     <div th:if="${mensagem}" th:text="${mensagem}"></div>
     <form action="/" method="post" class="mt-3">
-        <div class="input-group mb-3">
+        <div class="input-group mb-3 gCpf">
             <span class="input-group-text" id="sp_user"><i class="fa-solid fa-user"></i></span>
-            <input id="usuario" name="usuario" type="text" class="form-control" placeholder="CPF"
+            <input id="cpf" name="usuario" type="text" class="form-control" placeholder="CPF"
                    aria-label="Usuário" aria-describedby="sp_user">
         </div>
-        <div class="input-group mb-3">
+        <div class="input-group mb-3 gSenha">
             <span class="input-group-text" id="sp-password"><i class="fa-solid fa-key"></i></span>
             <input id="senha" name="senha" type="password" class="form-control" placeholder="Senha" aria-label="Senha"
                    aria-describedby="sp-password">
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <input value="Login" type="submit" class="btn btn-secondary">
+                <button id="login" class="btn btn-success" onclick="validaLogin()">Login</button>
             </div>
             <div class="col-sm-6 text-right">
-                <a class="btn btn-success" href="/cadastro">Cadastre-se</a>
+                <a class="btn btn-primary" href="/cadastro">Cadastre-se</a>
             </div>
         </div>
     </form>
 </div>
-
-
 </body>
 </html>

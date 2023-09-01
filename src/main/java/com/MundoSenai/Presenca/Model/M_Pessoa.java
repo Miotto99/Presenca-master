@@ -14,7 +14,7 @@ public class M_Pessoa {
     private String email;
     private Long cpf;
     private Long telefone;
-    private LocalDate data_nasc;
+    private LocalDate datanasc;
     private String senha;
 
     public Long getId() {
@@ -58,11 +58,11 @@ public class M_Pessoa {
     }
 
     public LocalDate getDatanasc() {
-        return data_nasc;
+        return datanasc;
     }
 
     public void setDatanasc(LocalDate data_nasc) {
-        this.data_nasc = data_nasc;
+        this.datanasc = data_nasc;
     }
 
     public String getSenha() {
